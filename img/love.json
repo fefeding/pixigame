@@ -1,0 +1,95 @@
+{"frames": {
+
+"bomb.png":
+{
+	"frame": {"x":0,"y":240,"w":192,"h":192},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":192,"h":192},
+	"sourceSize": {"w":192,"h":192}
+},
+"cz.png":
+{
+	"frame": {"x":384,"y":240,"w":192,"h":192},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":192,"h":192},
+	"sourceSize": {"w":192,"h":192}
+},
+"d.png":
+{
+	"frame": {"x":192,"y":240,"w":192,"h":192},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":192,"h":192},
+	"sourceSize": {"w":192,"h":192}
+},
+"m1.png":
+{
+	"frame": {"x":154,"y":0,"w":46,"h":54},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":46,"h":54},
+	"sourceSize": {"w":46,"h":54}
+},
+"m2.png":
+{
+	"frame": {"x":99,"y":0,"w":55,"h":53},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":55,"h":53},
+	"sourceSize": {"w":55,"h":53}
+},
+"score_10.png":
+{
+	"frame": {"x":0,"y":0,"w":99,"h":39},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":99,"h":39},
+	"sourceSize": {"w":99,"h":39}
+},
+"score_bg.png":
+{
+	"frame": {"x":201,"y":0,"w":165,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":166,"h":64},
+	"sourceSize": {"w":166,"h":64}
+},
+"start_tap.png":
+{
+	"frame": {"x":0,"y":80,"w":714,"h":160},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":714,"h":160},
+	"sourceSize": {"w":714,"h":160}
+},
+"startbutton.png":
+{
+	"frame": {"x":367,"y":0,"w":249,"h":80},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":250,"h":80},
+	"sourceSize": {"w":250,"h":80}
+},
+"x.png":
+{
+	"frame": {"x":576,"y":240,"w":192,"h":192},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":192,"h":192},
+	"sourceSize": {"w":192,"h":192}
+}},
+"animations": {
+	"m": ["m1.png","m2.png"]
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "love.png?201902132001",
+	"format": "RGBA8888",
+	"size": {"w":768,"h":432},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:5bb8625ec2f5c0ee2a84ed4f5a6ad212:f3955dc7846d47f763b8c969f5e7bed3:7f84f9b657b57037d77ff46252171049$"
+}
+}

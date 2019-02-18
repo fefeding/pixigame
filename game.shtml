@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="x5-cache" content="disable">
+<meta charset="utf-8">
+<meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
+<meta content="email=no" name="format-detection">
+<!--#include virtual="/mb/v4/inc/_meta.shtml" -->
+<style>
+    html,body{
+        margin:0;
+        padding:0;
+        overflow: hidden;
+    }
+</style>
+</head>
+<body>
+    <canvas id="game_stage"></canvas>    
+</body>
+<script src="js/pixi.js"></script>
+<script src="js/game.js"></script>
+
+<script>
+    game.onPlay = function(){
+        console.log('游戏开始, 重新开始和继续游戏也会调用');
+    }
+    game.onEnd = function(){
+        console.log('游戏结束，指走到了最后: score=' + this.score);
+    }
+    game.onBreak = function(){
+        console.log('碰到障碍物');
+    }
+    game.load();
+    //game.replay();//重新开始
+    //game.play();//继续
+    //game.pause();//暂停
+
+    game.init('game_stage', function(){
+        console.log('游戏加载完成');
+    });
+</script>
+</html>
