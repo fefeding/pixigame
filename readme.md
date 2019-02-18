@@ -44,5 +44,6 @@ app.ticker.add(function(delta) {
 ```
 
 ### 地图
-游戏的背景是一张超长的图：
-<img src="https://raw.githubusercontent.com/jiamao/pixigame/master/img/bg.jpg" width="20px" style="display:block;"/>
+游戏的背景是一张超长的图： 
+
+<img src="https://raw.githubusercontent.com/jiamao/pixigame/master/img/bg.jpg" width="20px"/>
