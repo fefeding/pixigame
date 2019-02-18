@@ -17,7 +17,7 @@
 了解以上内容我们就可以直接做小游戏了，其它知识可以去官网查看。
 
 ## 游戏制作
-此为一个躲避下落物理的小游戏，体验地址：[http://qian-img.tenpay.com/mb/action/love2019/game.shtml](http://qian-img.tenpay.com/mb/action/love2019/game.shtml)
+此为一个躲避下落物体的小游戏，体验地址 (`移动端`)：[http://qian-img.tenpay.com/mb/action/love2019/game.shtml](http://qian-img.tenpay.com/mb/action/love2019/game.shtml)
 
 ### 初始化PixiJS
 ```javascript
@@ -37,6 +37,8 @@ document.body.appendChild(app.view);
 //这里是APP的ticker，会不断调用此回调
 //我们在这里去调用游戏的状态更新函数
 app.ticker.add(function(delta) {
+    //理论上要用delta去做时间状态处理，我们这里比较简单就不去处理时间问题了
+    //每次执行都当做一个有效的更新
     game.update(delta);
 });
 ```
