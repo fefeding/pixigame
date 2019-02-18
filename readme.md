@@ -42,3 +42,7 @@ app.ticker.add(function(delta) {
     game.update(delta);
 });
 ```
+
+### 地图
+游戏的背景是一张超长的图：
+<img src="http://qian-img.tenpay.com/mb/action/love2019/img/bg.png" width="20px" style="display:block;"/>
