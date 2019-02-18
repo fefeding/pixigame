@@ -14,9 +14,8 @@
     var width = Math.min(win.innerWidth, 700);
     var height = Math.min(win.innerHeight, 1200);
     var maxScore = 520;//最高得分
-    var tempSprites = [];//临时的精灵，很快就会消失的
-    //var cdnDomain = '//qian-img.tenpay.com/mb/action/love2019/';
-    var cdnDomain = '/mb/action/love2019/';
+    var tempSprites = [];//临时的精灵，很快就会消失的    
+    var cdnDomain = '';
 
     //声音
     var sucSound,failSound,bgSound;
@@ -1192,9 +1191,9 @@
     //加载声音
     //这个不需要进来就加载，可以游戏初始化后再执行
     function loadSounds(callback) {
-        var bgurl = "//qian-img.tenpay.com/mb/action/love2019/img/music/bg_2019130144035.mp3";
-        var sucurl =  "//qian-img.tenpay.com/mb/action/love2019/img/music/s_201913014415.mp3";
-        var failurl = "//qian-img.tenpay.com/mb/action/love2019/img/music/fail.mp3";
+        var bgurl = "img/music/bg_2019130144035.mp3";
+        var sucurl =  "img/music/s_201913014415.mp3";
+        var failurl = "img/music/fail.mp3";
 
         if(sounds[sucurl] && sounds[failurl] && sounds[bgurl]) {
             callback && callback();
