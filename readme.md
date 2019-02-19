@@ -12,6 +12,7 @@
 * `PIXI.loader` 资源加载和管理器。
 * `PIXI.Texture` 材质，通常是指我们加载的图片。
 * `PIXI.Sprite` 精灵，就是游戏中的一个对象，结合`PIXI.Texture` 材质使用。
+* `PIXI.extras.AnimatedSprite` 动画精灵，可以设置多个图片，按序播放。
 * `PIXI.Container` 精灵容器，我们可以把多个精灵结合在一起组成一个更复杂的对象。
 
 了解以上内容我们就可以直接做小游戏了，其它知识可以去官网查看。
@@ -42,6 +43,8 @@ app.ticker.add(function(delta) {
     game.update(delta);
 });
 ```
+
+### 资源加载
 
 ### 地图
 游戏的背景是一张超长的图： 

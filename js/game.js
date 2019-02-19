@@ -1,6 +1,4 @@
 
-//活动号：8453
-//token：b16b9e28b0bf196d
 //游戏主体文件
 //要注册交互事件前，一定要把显示对象的interactive和buttonMode属性设为true。
 (function(win, doc){
