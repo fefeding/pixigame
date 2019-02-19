@@ -45,5 +45,14 @@ app.ticker.add(function(delta) {
 
 ### 地图
 游戏的背景是一张超长的图： 
+> <img src="https://raw.githubusercontent.com/jiamao/pixigame/master/img/bg.jpg" width="20px" alt="background"/>
 
-<img src="https://raw.githubusercontent.com/jiamao/pixigame/master/img/bg.jpg" width="20px"/>
+```flow
+st=>start: 开始
+op=>operation: my operation
+cond=>condition: Yes or No?
+e=>end
+st->op->cond
+cond(yes)->e
+cond(no)->op
+```
