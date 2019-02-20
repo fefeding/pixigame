@@ -45,7 +45,83 @@ app.ticker.add(function(delta) {
 ```
 
 ### 资源加载
+加载资源使用`PIXI.loader`，支持单个图片，或雪碧图的配置json文件。
+```
+PIXI.loader
+.add(name1, 'img/bg_1-min.jpg')
+.add(name2, 'img/love.json').load(function(){
+    //加载完
+});
+```
+雪碧图和其json配置文件可以用工具`TexturePackerGUI`来生成，
+格式如下:
+```json
+{"frames": {
 
+"bomb.png":
+{
+	"frame": {"x":0,"y":240,"w":192,"h":192},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":192,"h":192},
+	"sourceSize": {"w":192,"h":192}
+},
+...//省略多个
+"x.png":
+{
+	"frame": {"x":576,"y":240,"w":192,"h":192},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":192,"h":192},
+	"sourceSize": {"w":192,"h":192}
+}},
+"animations": {
+	"m": ["m1.png","m2.png"]
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "love.png?201902132001",
+	"format": "RGBA8888",
+	"size": {"w":768,"h":432},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:5bb8625ec2f5c0ee2a84ed4f5a6ad212:f3955dc7846d47f763b8c969f5e7bed3:7f84f9b657b57037d77ff46252171049$"
+}
+}
+```
+
+> <img src="https://raw.githubusercontent.com/jiamao/pixigame/master/img/love.png" height="200px" alt="background"/>
+
+### 精灵
+加载完资源后，我们就可以用`PIXI.loader.resources`读取资源，制作一个普通精灵。
+```javascript
+var textures = PIXI.loader.resources['qq'].textures;
+var sprite = new PIXI.Sprite(textures['qq_head.png']);
+```
+#### 动画
+
+跟上面普通精灵类似，只是使用多个图片做为侦。然后用`PIXI.extras.AnimatedSprite`来播放。
+例如下面我们取雪碧图中`f`开头的图片组成一个动画。
+资源图: <img src="https://raw.githubusercontent.com/jiamao/pixigame/master/img/bling.png" height="200px" alt="bling"/>
+
+```javascript
+var textures = PIXI.loader.resources['bling'];
+var expTextures = [];//当前动画所有材质集合
+var keys = textures.data.animations['f'];
+//按索引排个序，以免侦次序乱了
+keys.sort(function(k1,k2){
+    return k1.replace(/[^\d]/g,'') - k2.replace(/[^\d]/g,'');
+});
+for(var i=0;i<keys.length;i++) {
+    var t = textures[keys[i]];
+    expTextures.push(t);
+}
+var side = new PIXI.extras.AnimatedSprite(expTextures);
+side.animationSpeed = 0.15;//指定其播放速度
+app.stage.addChild(side);
+//其它接口可以查看官方文档
+```
+效果：![动画](http://qian-img.tenpay.com/resources/vtools/img/201902/61239174ed9e68f5a3a555863e21d0f3.gif)
 ### 地图
 游戏的背景是一张超长的图： 
 > <img src="https://raw.githubusercontent.com/jiamao/pixigame/master/img/bg.jpg" width="20px" alt="background"/>
