@@ -119,9 +119,9 @@ for(var i=0;i<keys.length;i++) {
 var side = new PIXI.extras.AnimatedSprite(expTextures);
 side.animationSpeed = 0.15;//指定其播放速度
 app.stage.addChild(side);
-//其它接口可以查看官方文档
+//其它接口请查看官方文档
 ```
-效果：![动画](http://qian-img.tenpay.com/resources/vtools/img/201902/61239174ed9e68f5a3a555863e21d0f3.gif)
+效果：![动画](https://raw.githubusercontent.com/jiamao/pixigame/master/img/demo/bling.gif)
 ### 地图
 游戏的背景是一张超长的图： 
 > <img src="https://raw.githubusercontent.com/jiamao/pixigame/master/img/bg.jpg" width="20px" alt="background"/>
