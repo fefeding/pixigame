@@ -137,6 +137,27 @@ this.height =  this.bg_height * this.scale;
 this.background.scale.x = this.scale;
 this.background.scale.y = this.scale;
 ```
+计算对象在屏幕中的坐标
+```javascript
+ //转为画布坐标
+toLocalPosition: function(x, y) {
+    if(typeof x == 'object') {
+        y = x.y;
+        x = x.x;
+    }
+    x = x||0;
+    y = y||0;
+    //x坐标为地图偏移量在对象在地图的坐标
+    x = x + this.offsetPosition.x;
+    //y为屏高+当前地图相对屏的偏移量，加上对象在地图的Y坐标再减去屏幕高度。
+    y = y + game.app.screen.height + this.offsetPosition.y - this.height;
+
+    return {
+        x: x,
+        y: y
+    };
+},
+```
 + 图片加载问题，如果直接加载长图效率太低。我们把图切成等高的五份。首次加载最底下的图，其它位置只用一个空精灵占位，再异步加载其它四张后替换其材质即可。
 ```javascript
 //初始化背景图
@@ -175,13 +196,160 @@ loadBackground: function(hs) {
 ```
 + 背景、障碍物和气球滑动问题。解决这个问题，我们把所有地图上的物体都初始化在背景上，它们的位置都是相对于背景的。当执行update时，实时根据地图相对于屏幕的位置来更新对象在屏幕上的坐标。
 ><img src="https://raw.githubusercontent.com/jiamao/pixigame/master/img/doc/bgdemo.png" width="20px" alt="bgdemo"/>
-
-```flow
-st=>start: 开始
-op=>operation: my operation
-cond=>condition: Yes or No?
-e=>end
-st->op->cond
-cond(yes)->e
-cond(no)->op
+#### 气球
+气球跟所有物体一样，有多个状态，当吃糖时还会有相应的动画。
+比如，气球在复活时有一定时间的无敌状态，这时我们就要一闪一闪来表示。
+```javascript
+updateGoldAni: function() {
+    //无敌显示状态 ,只隐显几下即可
+    if(this.state == 'gold') {
+        if(this.container.alpha >= 1) {
+            this.__appha_dir = 0;
+        }
+        else if(this.container.alpha <= 0.4) {
+            this.__appha_dir = 1;
+        }
+        if(this.__appha_dir) {
+            this.container.alpha += 0.02;
+        }
+        else {
+            this.container.alpha -= 0.02;
+        }
+    }
+    else if(this.container.alpha != 1) {
+        this.container.alpha = 1;
+    }
+},
 ```
+#### 滑动事件
+由于无论滑到屏幕任何位置都需要有效，则把事件绑到stage上。`PixiJS`对象如果要响应事件，则必须把`interactive`设置为`true`。
+```javascript
+//绑定滑动事件
+bindEvent: function() {
+    var isTouching = false; //是否在移动中
+    var lastPosition = {x:0, y:0};//最近一次移到的地方
+    this.app.stage.interactive = true;
+    this.app.stage.on('touchstart', function(e){
+        if(game.state == 'play') {
+            isTouching = true;
+            lastPosition.x = e.data.global.x;
+            lastPosition.y = e.data.global.y;
+            e.data.originalEvent && e.data.originalEvent.preventDefault && e.data.originalEvent.preventDefault();
+            //console.log(e.data.global)
+        }
+    }).on('touchmove', function(e){
+        if(isTouching && game.state == 'play') {
+            //console.log(e.data.global, lastPosition);
+            var offx = e.data.global.x - lastPosition.x;
+            heart.move(offx); //移动气球，只让横向移动
+            lastPosition.x = e.data.global.x;
+            lastPosition.y = e.data.global.y;
+        }
+        e.data.originalEvent && e.data.originalEvent.preventDefault && e.data.originalEvent.preventDefault();
+    }).on('touchend', touchEnd).on('touchcancel', touchEnd).on('touchendoutside', touchEnd);
+    function touchEnd(e) {
+        heart.m_state = 'normal';
+        console.log('normal')
+        isTouching = false;
+        heart.line.gotoAndStop(0);
+        e.data.originalEvent && e.data.originalEvent.preventDefault && e.data.originalEvent.preventDefault();
+    }
+},
+```
+在移动时，需要播放气球线条的左右移动画。line是一个animation精灵。
+```javascript
+var newx = this.container.x + offsetX;
+var directX = newx - this.container.x;
+//往右移动
+if(directX > 0) {
+    if(this.m_state != 'right') {
+        //开始右移动画
+        this.line.gotoAndPlay(1);
+    }
+    this.m_state = 'right'; //往右移动
+}
+//往左移动
+else if(directX < 0) {
+    if(this.m_state != 'left') {
+        //开始右移动画
+        this.line.gotoAndPlay(5);
+    }
+    this.m_state = 'left'; //往左移动
+}
+//超过一定时间没移动，则回到正常位置
+this.__moveTimeHandler = setTimeout(function(){
+    heart.m_state = 'normal';
+    heart.line.gotoAndStop(0);
+}, 500);
+this.container.x = newx;
+```
+
+>>障碍物和粮果相对简单，只需要相对于地图移动即可。
+
+#### 碰撞检测
+这块比较简单，都是规则的矩形。
+```javascript
+//二个矩形是否有碰撞
+function hitTestRectangle(r1, r2) {
+    var hitFlag, combinedHalfWidths, combinedHalfHeights, vx, vy, x1, y1, x2, y2, width1, height1, width2, height2;
+    hitFlag = false;
+
+    x1 = r1.x;
+    x2 = r2.x;
+    y1 = r1.y;
+    y2 = r2.y;
+    width1 = r1.width;
+    width2 = r2.width;
+    height1 = r1.height;
+    height2 = r2.height;
+    //如果对象有指定碰撞区域，则我们采用指定的坐标计算
+    if(r1.hitArea) {
+        x1 += r1.hitArea.x * map.scale;
+        y1 += r1.hitArea.y * map.scale;
+        width1 = r1.hitArea.width * map.scale;
+        height1 = r1.hitArea.height * map.scale;
+    }
+    if(r2.hitArea) {
+        x2 += r2.hitArea.x * map.scale;
+        y2 += r2.hitArea.y * map.scale;
+        width2 = r2.hitArea.width * map.scale;
+        height2 = r2.hitArea.height * map.scale;
+    }
+
+    //中心坐标点
+    r1.centerX = x1 + width1 / 2;
+    r1.centerY = y1 + height1 / 2;
+    r2.centerX = x2 + width2 / 2;
+    r2.centerY = y2 + height2 / 2;
+
+    //半宽高
+    r1.halfWidth = width1 / 2;
+    r1.halfHeight = height1 / 2;
+    r2.halfWidth = width2 / 2;
+    r2.halfHeight = height2 / 2;
+
+    //中心点的X和Y偏移值
+    vx = r1.centerX - r2.centerX;
+    vy = r1.centerY - r2.centerY;
+
+    //计算宽高一半的和
+    combinedHalfWidths = r1.halfWidth + r2.halfWidth;
+    combinedHalfHeights = r1.halfHeight + r2.halfHeight;
+
+    //如果中心X距离小于二者的一半宽和
+    if (Math.abs(vx) < combinedHalfWidths) {
+        //如果中心V偏移量也小于半高的和，则二者碰撞
+        if (Math.abs(vy) < combinedHalfHeights) {
+            hitFlag = true;
+        } else {
+            hitFlag = false;
+        }
+    } else {
+        hitFlag = false;
+    }
+    return hitFlag;
+};
+```
+
+此小游戏主要内容就这么多，具体的可以细看代码：
+>[https://github.com/jiamao/pixigame](https://github.com/jiamao/pixigame)

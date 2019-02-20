@@ -89,7 +89,7 @@
         show: function() {
             heart.show();//显示
         },
-        //加载函数
+        //绑定滑动事件
         bindEvent: function() {
             var isTouching = false; //是否在移动中
             var lastPosition = {x:0, y:0};//最近一次移到的地方
@@ -385,7 +385,7 @@
                     });
                 }*/
             },
-            //所球移动
+            //气球移动
             move: function(offsetX, offsetY) {
                 this.lastMoveTime = new Date().getTime();
                 this.__moveTimeHandler && clearTimeout(this.__moveTimeHandler);
@@ -1113,13 +1113,9 @@
         game.app.stage.addChild(this.sprite);
     }
 
-
+    //二个矩形是否有碰撞
     function hitTestRectangle(r1, r2) {
-
-        //Define the variables we'll need to calculate
         var hitFlag, combinedHalfWidths, combinedHalfHeights, vx, vy, x1, y1, x2, y2, width1, height1, width2, height2;
-
-        //hit will determine whether there's a collision
         hitFlag = false;
 
         x1 = r1.x;
@@ -1130,6 +1126,7 @@
         width2 = r2.width;
         height1 = r1.height;
         height2 = r2.height;
+        //如果对象有指定碰撞区域，则我们采用指定的坐标计算
         if(r1.hitArea) {
             x1 += r1.hitArea.x * map.scale;
             y1 += r1.hitArea.y * map.scale;
@@ -1143,46 +1140,37 @@
             height2 = r2.hitArea.height * map.scale;
         }
 
-        //Find the center points of each sprite
+        //中心坐标点
         r1.centerX = x1 + width1 / 2;
         r1.centerY = y1 + height1 / 2;
         r2.centerX = x2 + width2 / 2;
         r2.centerY = y2 + height2 / 2;
 
-        //Find the half-widths and half-heights of each sprite
+        //半宽高
         r1.halfWidth = width1 / 2;
         r1.halfHeight = height1 / 2;
         r2.halfWidth = width2 / 2;
         r2.halfHeight = height2 / 2;
 
-        //Calculate the distance vector between the sprites
+        //中心点的X和Y偏移值
         vx = r1.centerX - r2.centerX;
         vy = r1.centerY - r2.centerY;
 
-        //Figure out the combined half-widths and half-heights
+        //计算宽高一半的和
         combinedHalfWidths = r1.halfWidth + r2.halfWidth;
         combinedHalfHeights = r1.halfHeight + r2.halfHeight;
 
-        //Check for a collision on the x axis
+        //如果中心X距离小于二者的一半宽和
         if (Math.abs(vx) < combinedHalfWidths) {
-
-            //A collision might be occuring. Check for a collision on the y axis
+            //如果中心V偏移量也小于半高的和，则二者碰撞
             if (Math.abs(vy) < combinedHalfHeights) {
-
-                //There's definitely a collision happening
                 hitFlag = true;
             } else {
-
-                //There's no collision on the y axis
                 hitFlag = false;
             }
         } else {
-
-            //There's no collision on the x axis
             hitFlag = false;
         }
-
-        //`hit` will be either `true` or `false`
         return hitFlag;
     };
 
