@@ -121,10 +121,60 @@ side.animationSpeed = 0.15;//指定其播放速度
 app.stage.addChild(side);
 //其它接口请查看官方文档
 ```
-效果：![动画](https://raw.githubusercontent.com/jiamao/pixigame/master/img/demo/bling.gif)
-### 地图
+效果：![动画](https://raw.githubusercontent.com/jiamao/pixigame/master/img/doc/bling.gif)
+
+### 游戏设计
+#### 地图
+##### 背景
 游戏的背景是一张超长的图： 
 > <img src="https://raw.githubusercontent.com/jiamao/pixigame/master/img/bg.jpg" width="20px" alt="background"/>
++ 第一要考虑的就是分辨率问题，因为高度相对于屏来说是够长的，这里我们以宽度跟屏宽的比来做为缩放比例，而且所有游戏元素都是相对于背景设计的，因此所有元素都采用此缩放比即可。
+此处代码都是在游戏map对象中的。
+```javascript
+this.background = new pixiContainer(); //地图元素的container
+this.scale = (this.width / this.bg_width).toFixed(4) * 1;//地图宽缩放比例，为整个地图缩放比例
+this.height =  this.bg_height * this.scale;
+this.background.scale.x = this.scale;
+this.background.scale.y = this.scale;
+```
++ 图片加载问题，如果直接加载长图效率太低。我们把图切成等高的五份。首次加载最底下的图，其它位置只用一个空精灵占位，再异步加载其它四张后替换其材质即可。
+```javascript
+//初始化背景图
+var bgspOffsetY = 0;
+var bgHeights = [1646,1640,1652,1652,1637];
+//默认只加载了第一张图，其它的全用第一张图占位先，加载完后再覆盖
+for(var i=bgHeights.length-1; i>=0; i--) {
+    var bgsp = new pixiSprite(pixiResources['map_background1'].texture);
+    bgsp.position.set(0, bgspOffsetY);
+    this.background.addChild(bgsp);
+    bgspOffsetY += bgHeights[i];
+}
+```
+
+```javascript
+//load其它背景图
+loadBackground: function(hs) {
+    var bg2=loadSource('map_background2', cdnDomain+'img/bg_2-min.jpg');
+    var bg3=loadSource('map_background3', cdnDomain+'img/bg_3-min.jpg');
+    var bg4=loadSource('map_background4', cdnDomain+'img/bg_4-min.jpg');
+    var bg5=loadSource('map_background5', cdnDomain+'img/bg_5-min.jpg');
+    if(!bg2.isComplete||!bg3.isComplete||!bg4.isComplete||!bg5.isComplete){
+        pixiLoader.load(function(){
+            //children中，第一张是第五张，依次
+            for(var i=5;i>1;i--) {
+                map.background.children[5-i].texture = pixiResources['map_background' + i].texture;
+            }
+        });
+    }
+    else {
+        for(var i=5;i>1;i--) {
+            this.background.children[5-i].texture = pixiResources['map_background' + i].texture;
+        }
+    }
+}
+```
++ 背景、障碍物和气球滑动问题。解决这个问题，我们把所有地图上的物体都初始化在背景上，它们的位置都是相对于背景的。当执行update时，实时根据地图相对于屏幕的位置来更新对象在屏幕上的坐标。
+><img src="https://raw.githubusercontent.com/jiamao/pixigame/master/img/doc/bgdemo.png" width="20px" alt="bgdemo"/>
 
 ```flow
 st=>start: 开始
