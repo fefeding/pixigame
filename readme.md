@@ -123,6 +123,46 @@ app.stage.addChild(side);
 ```
 效果：![动画](https://jiamao.github.io/pixigame/img/doc/bling.gif)
 
+#### 状态更新
+每个对象都有一个`update`函数，都在这里自已更新自已的位置和状态(`update`由`app.ticker`定时调用)。所有对外开放的状态设置都提供接口，比如`die`、`move`等。
+如下：
+```javascript
+this.die = function() {
+    this.state = 'dead';
+    this.sprite.visible = false;
+    map.removeBob(this);
+}
+//发生碰撞，炸弹会导致气球破裂
+this.hitEnd = function() {
+    //气球破裂
+    heart.break(function(){
+        console.log('我跟气球撞了');
+    });
+}
+//更新炸弹状态
+this.update = function(delta) {
+    //计算当前在屏幕中的坐标
+    var p = map.toLocalPosition(this.position.x, this.position.y);
+    //运行中，障碍物到屏幕时才需要显示
+    if(game.state == 'play' && p.y >= -this.sprite.height) {
+        this.start();
+    }
+    if(!this.sprite.visible) return;
+    //移动精灵
+    this.sprite.x = p.x;
+    this.sprite.y = p.y;
+    //出了屏外，则不需要再显示
+    if(p.y > game.app.screen.height) {
+        this.die();
+        return;
+    }
+    //如果碰到当前精灵，则精灵死
+    if(heart.hitTest(this)) {
+        this.hitEnd();
+    }
+    this.position.y += this.vy; //保持自身的速度
+}
+```
 ### 游戏设计
 #### 地图
 ##### 背景
