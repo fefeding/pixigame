@@ -127,7 +127,7 @@ app.stage.addChild(side);
 #### 地图
 ##### 背景
 游戏的背景是一张超长的图： 
-> <img src="hhttps://jiamao.github.io/pixigame/img/bg.jpg" width="20px" alt="background"/>
+> <img src="https://jiamao.github.io/pixigame/img/bg.jpg" width="20px" alt="background"/>
 + 第一要考虑的就是分辨率问题，因为高度相对于屏来说是够长的，这里我们以宽度跟屏宽的比来做为缩放比例，而且所有游戏元素都是相对于背景设计的，因此所有元素都采用此缩放比即可。
 此处代码都是在游戏map对象中的。
 ```javascript
