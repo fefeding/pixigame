@@ -18,7 +18,7 @@
 了解以上内容我们就可以直接做小游戏了，其它知识可以去官网查看。
 
 ## 游戏制作
-此为一个躲避下落物体的小游戏，体验地址 (`移动端`)：[http://qian-img.tenpay.com/mb/action/love2019/game.shtml](http://qian-img.tenpay.com/mb/action/love2019/game.shtml)
+此为一个躲避下落物体的小游戏，体验地址 (`移动端`)：[https://jiamao.github.io/pixigame/game.html](https://jiamao.github.io/pixigame/game.html)
 
 ### 初始化PixiJS
 ```javascript
@@ -90,7 +90,7 @@ PIXI.loader
 }
 ```
 
-> <img src="https://raw.githubusercontent.com/jiamao/pixigame/master/img/love.png" height="200px" alt="background"/>
+> <img src="https://jiamao.github.io/pixigame/img/love.png" height="200px" alt="background"/>
 
 ### 精灵
 加载完资源后，我们就可以用`PIXI.loader.resources`读取资源，制作一个普通精灵。
@@ -102,7 +102,7 @@ var sprite = new PIXI.Sprite(textures['qq_head.png']);
 
 跟上面普通精灵类似，只是使用多个图片做为侦。然后用`PIXI.extras.AnimatedSprite`来播放。
 例如下面我们取雪碧图中`f`开头的图片组成一个动画。
-资源图: <img src="https://raw.githubusercontent.com/jiamao/pixigame/master/img/bling.png" height="200px" alt="bling"/>
+资源图: <img src="https://jiamao.github.io/pixigame/img/bling.png" height="200px" alt="bling"/>
 
 ```javascript
 var textures = PIXI.loader.resources['bling'];
@@ -121,13 +121,13 @@ side.animationSpeed = 0.15;//指定其播放速度
 app.stage.addChild(side);
 //其它接口请查看官方文档
 ```
-效果：![动画](https://raw.githubusercontent.com/jiamao/pixigame/master/img/doc/bling.gif)
+效果：![动画](https://jiamao.github.io/pixigame/img/doc/bling.gif)
 
 ### 游戏设计
 #### 地图
 ##### 背景
 游戏的背景是一张超长的图： 
-> <img src="https://raw.githubusercontent.com/jiamao/pixigame/master/img/bg.jpg" width="20px" alt="background"/>
+> <img src="hhttps://jiamao.github.io/pixigame/img/bg.jpg" width="20px" alt="background"/>
 + 第一要考虑的就是分辨率问题，因为高度相对于屏来说是够长的，这里我们以宽度跟屏宽的比来做为缩放比例，而且所有游戏元素都是相对于背景设计的，因此所有元素都采用此缩放比即可。
 此处代码都是在游戏map对象中的。
 ```javascript
@@ -195,7 +195,7 @@ loadBackground: function(hs) {
 }
 ```
 + 背景、障碍物和气球滑动问题。解决这个问题，我们把所有地图上的物体都初始化在背景上，它们的位置都是相对于背景的。当执行update时，实时根据地图相对于屏幕的位置来更新对象在屏幕上的坐标。
-><img src="https://raw.githubusercontent.com/jiamao/pixigame/master/img/doc/bgdemo.png" width="20px" alt="bgdemo"/>
+><img src="https://jiamao.github.io/pixigame/img/doc/bgdemo.png" width="20px" alt="bgdemo"/>
 #### 气球
 气球跟所有物体一样，有多个状态，当吃糖时还会有相应的动画。
 比如，气球在复活时有一定时间的无敌状态，这时我们就要一闪一闪来表示。
